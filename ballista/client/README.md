@@ -1,8 +1,63 @@
 # Apache Ballista: Distributed Compute Platform for Apache Arrow DataFusion
 
-**Apache Ballista** is a distributed compute platform built on top of [Apache Arrow](https://arrow.apache.org/) and [DataFusion](https://arrow.apache.org/datafusion/). It enables scalable, distributed data processing using a modern, memory-efficient execution engine. Ballista extends DataFusion's capabilities from standalone to **multi-node clusters**, facilitating efficient execution of large-scale data workloads.
+**Apache Ballista** is a distributed compute platform built on [Apache Arrow](https://arrow.apache.org/) and [DataFusion](https://arrow.apache.org/datafusion/). It enables scalable, distributed data processing using a modern, memory-efficient execution engine. Ballista extends DataFusion's capabilities from standalone to **multi-node clusters**, facilitating efficient execution of large-scale data workloads.
+
+Apache Ballista is built on the following foundational technologies:
+
+- [Apache Arrow](https://github.com/apache/arrow-rs): Provides the memory model and compute kernels for efficient in-memory data processing.
+
+- [Apache Arrow Flight Protocol](https://github.com/apache/arrow-rs/tree/main/arrow-flight): Facilitates efficient data transfer between processes.
+
+- [Google Protocol Buffers](https://github.com/protocolbuffers/protobuf): Used for serializing query plans to make distributed execution fast and reliable.
 
 Ballista is designed to be flexible and open-ended, supporting a wide range of use cases—from executing distributed data science workflows to integrating as part of a larger distributed compute program.
+
+---
+## Ballista Crate Details
+
+Ballista is composed of several crates that together provide the necessary components for distributed data processing. Below is an overview of each of these crates, along with links to their respective GitHub repositories and crates.io pages for more details.
+
+### **ballista (this crate)**
+
+The `ballista` crate provides the client API, enabling users to interact with the Ballista scheduler. This crate allows for the submission of queries and the retrieval of results, serving as the primary interface for users to engage with the Ballista cluster.
+
+- **GitHub**: [ballista/client](https://github.com/apache/datafusion-ballista/tree/main/ballista/client/src)
+- **Crates.io**: [ballista](https://crates.io/crates/ballista)
+
+### **ballista-core**
+
+The `ballista-core` crate serves as the backbone of the Ballista platform, containing shared data structures and logic across the system. This crate includes definitions for the execution plan, scheduler policies, and other fundamental components that ensure cohesive operation among different parts of Ballista.
+
+- **GitHub**: [ballista/core](https://github.com/apache/datafusion-ballista/tree/main/ballista/core/src)
+- **Crates.io**: [ballista-core](https://crates.io/crates/ballista-core)
+
+### **ballista-executor**
+
+The `ballista-executor` crate is responsible for executing tasks assigned by the scheduler. Executors handle the actual data processing work, executing query plans on data partitions and returning results to the scheduler. This crate is designed to be scalable, allowing multiple executors to run concurrently across different nodes in a cluster.
+
+- **GitHub**: [ballista/executor](https://github.com/apache/datafusion-ballista/tree/main/ballista/executor/src)
+- **Crates.io**: [ballista-executor](https://crates.io/crates/ballista-executor)
+
+### **ballista-scheduler**
+
+The `ballista-scheduler` crate orchestrates the distribution of tasks to executors. It manages execution plans, assigns tasks to available executors, and monitors their progress. The scheduler is critical for ensuring efficient resource utilization and load balancing within the Ballista cluster.
+
+- **GitHub**: [ballista/scheduler](https://github.com/apache/datafusion-ballista/tree/main/ballista/scheduler/src)
+- **Crates.io**: [ballista-scheduler](https://crates.io/crates/ballista-scheduler)
+
+Understanding the roles of these crates is crucial for effectively deploying and utilizing Ballista in various environments. Each component plays a vital role in ensuring Ballista's ability to perform distributed data processing efficiently.
+
+### **ballista-cli**
+
+The `ballista-cli` crate provides a command-line interface for interacting with the Ballista cluster. This crate allows users to submit queries, manage jobs, and monitor the status of tasks running in the cluster. The CLI is a convenient tool for administrators and developers to interact with Ballista without writing custom code.
+
+- **GitHub**: [ballista/cli](https://github.com/Epicism/datafusion-ballista/tree/main/ballista-cli)
+- **Crates.io**: [ballista-cli](https://crates.io/crates/ballista-cli)
+
+### **ballista-python**
+The `ballista-python` crate provides a Python binding for Ballista, allowing users to interact with the Ballista cluster using Python. This crate enables data scientists and analysts to leverage Ballista's distributed capabilities through familiar Python tools and workflows.
+- **GitHub**: [ballista/python](https://github.com/apache/datafusion-python)
+- **Documentation**: [ballista-python](https://datafusion.apache.org/ballista/user-guide/python.html)
 
 ---
 
@@ -35,20 +90,9 @@ Ballista is designed to be flexible and open-ended, supporting a wide range of u
 
 ---
 
-## Foundational Technologies
-
-Apache Ballista is built on the following foundational technologies:
-
-- [**Apache Arrow**](https://arrow.apache.org/): Provides the memory model and compute kernels for efficient in-memory processing of data.
-- [**Apache Arrow Flight Protocol**](https://arrow.apache.org/blog/2019/10/13/introducing-arrow-flight/): Facilitates efficient data transfer between processes.
-- [**Google Protocol Buffers**](https://developers.google.com/protocol-buffers): Used for serializing query plans to make distributed execution fast and reliable.
-- [**Docker**](https://www.docker.com/): Used to package executors along with user-defined code, making it easy to deploy executors in different environments.
-
----
-
 ## Standalone Deployment
 
-The **standalone deployment** mode of Ballista allows users to run the scheduler and executor locally on a single machine. This is ideal for **prototyping** data analysis workflows using DataFusion, without the complexity of setting up a full distributed cluster. It’s a good starting point for users who want to explore the capabilities of Ballista and develop transformations or queries in a local environment.
+The **standalone deployment** mode of Ballista allows users to run the scheduler and executor locally on a single machine. This is ideal for **prototyping** data analysis workflows using DataFusion without the complexity of setting up a fully distributed cluster. It’s a good starting point for users exploring Ballista's capabilities and developing transformations or queries in a local environment.
 
 ### Use Cases
 
@@ -110,13 +154,13 @@ In this example, the scheduler and executor both run locally, making it ideal fo
 
 ## Distributed Deployment
 
-The **distributed deployment** mode of Ballista allows you to expand from a standalone setup to a multi-node cluster, making it possible to process large-scale data workloads efficiently. This deployment method is suitable for organizations or projects that require the scalability and resilience of distributed processing.
+Ballista's **distributed deployment** mode allows you to expand from a standalone setup to a multi-node cluster, making processing large-scale data workloads efficiently possible. This deployment method is suitable for organizations or projects that require the scalability and resilience of distributed processing.
 
 ### Use Cases
 
 Distributed Ballista can be used in scenarios where data processing requirements exceed the capabilities of a single machine:
 
-- **Scaling to Distributed Execution**: Expand from a standalone setup to distributed execution by adding more executors to **scale up** workloads and parallelize data processing tasks.
+- **Scaling to Distributed Execution**: Expand from a standalone setup to distributed execution by adding more executors to \*\*scale workloads\*\* and parallelize data processing tasks.
 - **Handling Large-Scale ETL**: Distributed deployment is ideal for running **ETL (Extract, Transform, Load) processes** that involve massive datasets requiring distributed processing power.
 
 ### Deployment Steps
@@ -137,10 +181,6 @@ To move from a standalone to a distributed setup, follow these steps:
      ```
 
 This setup allows Ballista to distribute tasks among multiple executors, significantly improving performance for large-scale data workloads.
-
-### Kubernetes Deployment and High Availability
-
-Ballista can be deployed as a standalone cluster or in a **Kubernetes** environment for scalability and redundancy. In a Kubernetes deployment, the **scheduler** can be configured to use [etcd](https://etcd.io/) as a backing store, providing redundancy in case of a scheduler failure. This setup is recommended for production environments that require **high availability**.
 
 ### Example: Distributed Query Execution
 
@@ -165,13 +205,13 @@ This example illustrates how Ballista can be used in a distributed context, with
 
 ## Python Binding
 
-The **Python binding** allows data scientists and analysts to interact with Ballista through Python, much like using **PySpark**. This makes it easy for those familiar with Python to leverage the distributed capabilities of Ballista without diving into Rust code.
+The **Python binding** allows data scientists and analysts to interact with Ballista through Python, much like using **PySpark**. This makes it easy for those familiar with Python to leverage Ballista's distributed capabilities without diving into Rust code.
 
 ### Use Cases
 
 1. **Ad-hoc Data Management**:
 
-   - Ballista’s Python API can be used for **quick exploration** and **data management**, similar to Pandas.
+   - Like Pandas, Ballista’s Python API can be used for **quick exploration** and **data management**.
    - **Example Scenarios**: Registering a CSV or Parquet dataset and running basic queries to explore data relationships.
 
 2. **Data Science Workloads**:
@@ -206,13 +246,14 @@ The **Python binding** allows data scientists and analysts to interact with Ball
    df = ctx.sql("SELECT COUNT(*) FROM trips")
    df.show()
    ``
+   ```
 
 ### Examples
 
 - **Ad-hoc Query Example**:
 
   - Demonstrate using the Python API to run basic aggregations on a dataset.
-  
+
   ```python
   df = ctx.sql("SELECT passenger_count, AVG(fare_amount) FROM trips GROUP BY passenger_count")
   df.show()
@@ -226,7 +267,7 @@ The **Python binding** allows data scientists and analysts to interact with Ball
 
 ## Rust Library
 
-The **Rust library** allows developers to embed Ballista directly into their applications or distributed compute platforms. This provides the flexibility to create custom schedulers, modify execution plans, and integrate Ballista as a core component of bespoke distributed systems.
+Ballista can be used as a **rust library** to allow developers to embed Ballista directly into their applications or distributed compute platforms. This provides the flexibility to create custom schedulers, modify execution plans, and integrate Ballista as a core component of bespoke distributed systems.
 
 ### Use Cases
 
@@ -318,7 +359,7 @@ The **Rust library** allows developers to embed Ballista directly into their app
   }
   ```
 
-This example demonstrates how to execute a distributed query involving aggregations and sorting. It shows the flexibility of Ballista for processing real-world datasets.
+This example demonstrates how to execute a distributed query involving aggregations and sorting. It shows Ballista's flexibility in processing real-world datasets.
 
 ---
 
@@ -327,14 +368,17 @@ This example demonstrates how to execute a distributed query involving aggregati
 ### Common Configuration Scenarios
 
 - **Scheduler Policies**:
+
   - Choose between `push-staged` or `pull-staged` strategies to determine how tasks are assigned to executors.
 
 - **Executor Slots Policy**:
+
   - Configure policies such as `round-robin`, `bias`, or `round-robin-local` to manage how tasks are assigned.
 
 - **Job Cleanup**:
+
   - Set up automatic **job cleanup** to manage completed job data and maintain efficient disk usage.
-  
+
 For more details, visit the [Configuration Guide](https://datafusion.apache.org/ballista/user-guide/configs.html).
 
 ---
@@ -348,12 +392,10 @@ For more details, visit the [Configuration Guide](https://datafusion.apache.org/
 - **Community Resources**: Join the **Apache Arrow** community on [Discord and GitHub Discussions](https://github.com/apache/arrow-rs?tab=readme-ov-file#arrow-rust-community).
 
 ---
+### Deployment Options
+Ballista can be deployed in various environments, offering flexibility and scalability to meet diverse data processing needs. Below are some common deployment options for Ballista:
+- [Docker](https://datafusion.apache.org/ballista/user-guide/deployment/docker.html): Used to package executors and user-defined code, making deploying executors in different environments easy.
+- [Docker Compose](https://datafusion.apache.org/ballista/user-guide/deployment/docker-compose.html): Allows you to define and run multi-container Docker applications, simplifying the deployment of Ballista clusters. Primarily used during testing.
 
-### **Summary of Updates**:
-
-1. **Separated Standalone and Distributed Deployment Sections** for better clarity and cohesion.
-2. **Replaced Bullet Points with Narrative Flow** to create smooth transitions and better readability.
-3. **Numbered Lists for Step-by-Step Instructions** to make instructions easier to follow.
-4. **Expanded Examples with Context** to explain the purpose and relevance of each code snippet.
-5. **Added Missing Elements from Original Content**: Kubernetes deployment, Docker support, foundational technologies, Rust compatibility note, and a more advanced example query.
+- [Kubernetes](https://datafusion.apache.org/ballista/user-guide/deployment/kubernetes.html): Ballista can be deployed as a standalone or cluster in a Kubernetes environment. In a Kubernetes deployment, the scheduler can be configured to use etcd as a backing store, providing redundancy in case of a scheduler failure.
 
