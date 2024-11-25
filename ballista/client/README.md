@@ -12,6 +12,31 @@ Apache Ballista is built on the following foundational technologies:
 
 Ballista is designed to be flexible and open-ended, supporting a wide range of use cases—from executing distributed data science workflows to integrating as part of a larger distributed compute program.
 
+--
+## Table of Contents
+- [Apache Ballista: Distributed Compute Platform for Apache Arrow DataFusion](#apache-ballista-distributed-compute-platform-for-apache-arrow-datafusion)
+  - [Table of Contents](#table-of-contents)
+  - [Ballista Crate Details](#ballista-crate-details)
+    - [ballista (this crate)](#ballista-this-crate)
+    - [ballista-core](#ballista-core)
+    - [ballista-executor](#ballista-executor)
+    - [ballista-scheduler](#ballista-scheduler)
+    - [ballista-cli](#ballista-cli)
+    - [ballista-python](#ballista-python)
+  - [Overview of Deployment Methods](#overview-of-deployment-methods)
+    - [Standalone Deployment](#standalone-deployment)
+    - [Distributed Deployment](#distributed-deployment)
+    - [Python Binding](#python-binding)
+    - [Rust Library (Embeddable Library)](#rust-library-embeddable-library)
+  - [Deployment Method Details](#deployment-method-details)
+    - [Standalone Deployment](#standalone-deployment-1)
+    - [Distributed Deployment](#distributed-deployment-1)
+    - [Python Binding](#python-binding-1)
+    - [Rust Library](#rust-library)
+  - [Configuration and Advanced Settings](#configuration-and-advanced-settings)
+  - [Community and Additional Resources](#community-and-additional-resources)
+  - [Deployment Options](#deployment-options)
+
 ---
 ## Ballista Crate Details
 
@@ -65,43 +90,40 @@ The `ballista-python` crate provides a Python binding for Ballista, allowing use
 
 **Ballista** offers three main ways to deploy and use its distributed capabilities. Below is an overview of each method, with links to detailed sections on how to get started, use cases, examples, and more.
 
-1. **Standalone Deployment**:
+1. [**Standalone Deployment**](#standalone-deployment):
 
    - Accessible through **GitHub or Crates.io**.
    - Use Ballista as a **standalone scheduler/executor** for local testing and development.
-   - [See more about Standalone Deployment →](#standalone-deployment)
 
-2. **Distributed Deployment**:
+2. [**Distributed Deployment**](#distributed-deployment):
 
    - Expand from standalone deployment to run Ballista across **multiple nodes** for greater scalability.
-   - [See more about Distributed Deployment →](#distributed-deployment)
 
-3. **Python Binding**:
+3. [**Python Binding**](#python-binding):
 
    - A Python wrapper for the Rust binary.
    - Useful for **ad-hoc data management** or **data science workloads**.
-   - [See more about Python Binding →](#python-binding)
 
-4. **Rust Library (Embeddable Library)**:
+4. [**Rust Library (Embeddable Library)**](#rust-library):
 
    - Ballista can be embedded into **custom distributed systems**.
    - Best suited for developers who want to **extend** Ballista’s capabilities as part of their distributed compute workload.
-   - [See more about Rust Library →](#rust-library)
 
 ---
+## Deployment Method Details
 
-## Standalone Deployment
+### Standalone Deployment
 
 The **standalone deployment** mode of Ballista allows users to run the scheduler and executor locally on a single machine. This is ideal for **prototyping** data analysis workflows using DataFusion without the complexity of setting up a fully distributed cluster. It’s a good starting point for users exploring Ballista's capabilities and developing transformations or queries in a local environment.
 
-### Use Cases
+#### Use Cases
 
 Standalone Ballista can be used in several scenarios:
 
 - **Local Prototyping**: Easily test and prototype SQL queries or data transformations before scaling up to a distributed setup.
 - **Testing and Development**: Use the standalone deployment to develop and verify data analysis logic without requiring a distributed cluster.
 
-### Deployment Steps
+#### Deployment Steps
 
 Follow these steps to set up a standalone deployment of Ballista:
 
@@ -129,7 +151,7 @@ Follow these steps to set up a standalone deployment of Ballista:
 
 This setup allows you to process data locally, with the scheduler coordinating tasks and the executor performing the actual computation.
 
-### Example: Running a Standalone Query
+#### Example: Running a Standalone Query
 
 To illustrate the standalone capabilities, let’s run a simple SQL query using Ballista:
 
@@ -152,18 +174,18 @@ In this example, the scheduler and executor both run locally, making it ideal fo
 
 ---
 
-## Distributed Deployment
+### Distributed Deployment
 
 Ballista's **distributed deployment** mode allows you to expand from a standalone setup to a multi-node cluster, making processing large-scale data workloads efficiently possible. This deployment method is suitable for organizations or projects that require the scalability and resilience of distributed processing.
 
-### Use Cases
+#### Use Cases
 
 Distributed Ballista can be used in scenarios where data processing requirements exceed the capabilities of a single machine:
 
 - **Scaling to Distributed Execution**: Expand from a standalone setup to distributed execution by adding more executors to \*\*scale workloads\*\* and parallelize data processing tasks.
 - **Handling Large-Scale ETL**: Distributed deployment is ideal for running **ETL (Extract, Transform, Load) processes** that involve massive datasets requiring distributed processing power.
 
-### Deployment Steps
+#### Deployment Steps
 
 To move from a standalone to a distributed setup, follow these steps:
 
@@ -182,7 +204,7 @@ To move from a standalone to a distributed setup, follow these steps:
 
 This setup allows Ballista to distribute tasks among multiple executors, significantly improving performance for large-scale data workloads.
 
-### Example: Distributed Query Execution
+#### Example: Distributed Query Execution
 
 The following example demonstrates how to use multiple executors to run a distributed aggregation query:
 
@@ -203,11 +225,11 @@ This example illustrates how Ballista can be used in a distributed context, with
 
 ---
 
-## Python Binding
+### Python Binding
 
 The **Python binding** allows data scientists and analysts to interact with Ballista through Python, much like using **PySpark**. This makes it easy for those familiar with Python to leverage Ballista's distributed capabilities without diving into Rust code.
 
-### Use Cases
+#### Use Cases
 
 1. **Ad-hoc Data Management**:
 
@@ -219,7 +241,7 @@ The **Python binding** allows data scientists and analysts to interact with Ball
    - Use Ballista’s Python bindings for **distributed data science tasks**, leveraging familiar tools to handle larger datasets.
    - **Example Scenarios**: Distributed aggregations, filtering, or preparing data for machine learning workflows.
 
-### Deployment Steps
+#### Deployment Steps
 
 1. **Installing the Python Package**:
 
@@ -248,7 +270,7 @@ The **Python binding** allows data scientists and analysts to interact with Ball
    ``
    ```
 
-### Examples
+#### Examples
 
 - **Ad-hoc Query Example**:
 
@@ -265,17 +287,17 @@ The **Python binding** allows data scientists and analysts to interact with Ball
 
 ---
 
-## Rust Library
+### Rust Library
 
 Ballista can be used as a **rust library** to allow developers to embed Ballista directly into their applications or distributed compute platforms. This provides the flexibility to create custom schedulers, modify execution plans, and integrate Ballista as a core component of bespoke distributed systems.
 
-### Use Cases
+#### Use Cases
 
 1. **Embedding Ballista in Custom Compute Programs**:
    - Use Ballista as a **Rust library** to embed distributed compute capabilities within custom systems.
    - **Example Scenarios**: Build a custom compute platform or develop specialized schedulers.
 
-### Deployment Steps
+#### Deployment Steps
 
 1. **Adding Ballista as a Dependency**:
 
@@ -293,7 +315,7 @@ Ballista can be used as a **rust library** to allow developers to embed Ballista
    - Customize schedulers and executors using Ballista’s extensible components.
    - See [Extending Components Guide](https://github.com/apache/datafusion-ballista/blob/main/docs/source/user-guide/extending-components.md).
 
-### Examples
+#### Examples
 
 - **Basic Embedding Example**:
 
