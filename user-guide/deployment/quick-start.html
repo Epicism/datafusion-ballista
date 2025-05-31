@@ -22,7 +22,7 @@
       
   
     
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
     <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=ef9fea58" />
     
@@ -146,11 +146,6 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../flightsql.html">
-   Flight SQL JDBC
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="../cli.html">
    SQL CLI
   </a>
@@ -180,6 +175,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../faq.html">
    Frequently Asked Questions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extending-components.html">
+   Extending Ballista Scheduler And Executors
   </a>
  </li>
 </ul>
@@ -357,9 +357,9 @@
 </div>
 <p>Start one or more Ballista executor processes in new terminal sessions. When starting more than one
 executor, a unique port number must be specified for each executor.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">RUST_LOG</span><span class="o">=</span>info<span class="w"> </span>./target/release/ballista-executor<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span>-p<span class="w"> </span><span class="m">50051</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">RUST_LOG</span><span class="o">=</span>info<span class="w"> </span>./target/release/ballista-executor<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span>-p<span class="w"> </span><span class="m">50051</span><span class="w"> </span>--bind-grpc-port<span class="w"> </span><span class="m">50052</span>
 
-<span class="nv">RUST_LOG</span><span class="o">=</span>info<span class="w"> </span>./target/release/ballista-executor<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span>-p<span class="w"> </span><span class="m">50052</span>
+<span class="nv">RUST_LOG</span><span class="o">=</span>info<span class="w"> </span>./target/release/ballista-executor<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span>-p<span class="w"> </span><span class="m">50053</span><span class="w"> </span>--bind-grpc-port<span class="w"> </span><span class="m">50054</span>
 </pre></div>
 </div>
 </section>
@@ -439,7 +439,7 @@ cargo<span class="w"> </span>run<span class="w"> </span>--release<span class="w"
 <span class="cp">#[tokio::main]</span>
 <span class="k">async</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// creating SessionContext with default settings</span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span><span class="p">::</span><span class="n">remote</span><span class="p">(</span><span class="s">&quot;df://localhost:50050&quot;</span><span class="p">.</span><span class="k">await</span><span class="o">?</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span><span class="p">::</span><span class="n">remote</span><span class="p">(</span><span class="s">&quot;df://localhost:50050&quot;</span><span class="p">).</span><span class="k">await</span><span class="o">?</span><span class="p">;</span>
 
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">test_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">test_util</span><span class="p">::</span><span class="n">examples_test_data</span><span class="p">();</span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="fm">format!</span><span class="p">(</span><span class="s">&quot;{test_data}/alltypes_plain.parquet&quot;</span><span class="p">);</span>

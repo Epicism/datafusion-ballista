@@ -44,9 +44,9 @@ Start one or more Ballista executor processes in new terminal sessions. When sta
 executor, a unique port number must be specified for each executor.
 
 ```shell
-RUST_LOG=info ./target/release/ballista-executor -c 2 -p 50051
+RUST_LOG=info ./target/release/ballista-executor -c 2 -p 50051 --bind-grpc-port 50052
 
-RUST_LOG=info ./target/release/ballista-executor -c 2 -p 50052
+RUST_LOG=info ./target/release/ballista-executor -c 2 -p 50053 --bind-grpc-port 50054
 ```
 
 ## Running the examples
@@ -128,7 +128,7 @@ use datafusion::{
 #[tokio::main]
 async fn main() -> Result<()> {
     // creating SessionContext with default settings
-    let ctx = SessionContext::remote("df://localhost:50050".await?;
+    let ctx = SessionContext::remote("df://localhost:50050").await?;
 
     let test_data = test_util::examples_test_data();
     let filename = format!("{test_data}/alltypes_plain.parquet");

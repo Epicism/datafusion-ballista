@@ -22,7 +22,7 @@
       
   
     
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
     <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=ef9fea58" />
     
@@ -146,11 +146,6 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="flightsql.html">
-   Flight SQL JDBC
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="cli.html">
    SQL CLI
   </a>
@@ -180,6 +175,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="faq.html">
    Frequently Asked Questions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="extending-components.html">
+   Extending Ballista Scheduler And Executors
   </a>
  </li>
 </ul>
@@ -334,9 +334,17 @@
 <td><p>GET</p></td>
 <td><p>Produce a query plan in DOT (graphviz) format.</p></td>
 </tr>
-<tr class="row-odd"><td><p>/api/job/{job_id}</p></td>
+<tr class="row-odd"><td><p>/api/job/:job_id/dot_svg</p></td>
+<td><p>GET</p></td>
+<td><p>Produce a query plan in SVG format. (<code class="docutils literal notranslate"><span class="pre">graphviz-support</span></code> required)</p></td>
+</tr>
+<tr class="row-even"><td><p>/api/job/{job_id}</p></td>
 <td><p>PATCH</p></td>
 <td><p>Cancel a currently running job</p></td>
+</tr>
+<tr class="row-odd"><td><p>/api/job/:job_id/stage/:stage_id/dot</p></td>
+<td><p>GET</p></td>
+<td><p>Produces stage plan in DOT (graphviz) format</p></td>
 </tr>
 <tr class="row-even"><td><p>/api/metrics</p></td>
 <td><p>GET</p></td>
